@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Neo Damas - Juego de estrategia</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="theme-dark">
+  <div class="app">
+    <div class="screen screen-menu active" id="menuScreen">
+      <div class="menu-card neon-card">
+        <div class="brand">
+          <h1>NEO DAMAS</h1>
+          <p>Un juego de tablero inspirado en damas clásicas con mecánicas modernas.</p>
+        </div>
+
+        <div class="menu-grid">
+          <div class="menu-panel">
+            <label>Modo de juego</label>
+            <div class="radio-row">
+              <label><input type="radio" name="mode" value="local" checked /> Local</label>
+              <label><input type="radio" name="mode" value="ai" /> VS Computadora</label>
+            </div>
+
+            <label>Nombre Jugador 1</label>
+            <input id="player1Name" type="text" maxlength="12" value="Aurora" />
+
+            <label>Nombre Jugador 2</label>
+            <input id="player2Name" type="text" maxlength="12" value="Nova" />
+
+            <div class="settings-row">
+              <div>
+                <label>Temática</label>
+                <button id="themeToggle" class="small-button">Oscuro</button>
+              </div>
+              <div>
+                <label>Sonido</label>
+                <button id="soundToggle" class="small-button">ON</button>
+              </div>
+              <div>
+                <label>Música</label>
+                <button id="musicToggle" class="small-button">OFF</button>
+              </div>
+            </div>
+
+            <div class="difficulty-row" id="difficultyCard">
+              <label>Dificultad IA</label>
+              <select id="aiLevelSelect">
+                <option value="easy">Fácil</option>
+                <option value="medium" selected>Medio</option>
+                <option value="hard">Difícil</option>
+              </select>
+            </div>
+
+            <button id="startButton" class="primary-button">Iniciar partida</button>
+          </div>
+
+          <div class="menu-panel neon-panel rules-panel">
+            <h2>Cómo jugar</h2>
+            <div class="rules-scroll">
+              <p>Bienvenido a <strong>Neo Damas</strong>, donde la estrategia clásica se mezcla con mecánicas futuristas.</p>
+              <ul>
+                <li>Juega en un tablero 8x8 con casillas especiales <span class="glow-text">"Zona Neón"</span>.</li>
+                <li>Las capturas son obligatorias y generan <strong>cadenas de combo</strong>.</li>
+                <li>Al llegar a la franja opuesta, las piezas se <strong>evolucionan</strong> y obtienen habilidades únicas.</li>
+                <li>Las piezas cargadas pueden moverse dos casillas en diagonal una vez.</li>
+                <li>15 segundos por turno: si el tiempo se agota, pierdes automáticamente el turno.</li>
+                <li>El objetivo es inmovilizar al rival o capturar todas sus piezas.</li>
+              </ul>
+              <p class="mini-note">Revisa las estadísticas guardadas y desbloquea victorias con IA de diferentes niveles.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="screen screen-game" id="gameScreen">
+      <div class="top-bar neon-card">
+        <div class="player-info">
+          <div>
+            <span class="label">Jugador 1</span>
+            <strong id="displayName1">Aurora</strong>
+          </div>
+          <div>
+            <span class="label">Jugador 2</span>
+            <strong id="displayName2">Nova</strong>
+          </div>
+        </div>
+        <div class="status-info">
+          <div class="status-pill" id="turnIndicator">Turno: Aurora</div>
+          <div class="timer-card">
+            <span id="timerLabel">15</span>
+            <div class="timer-bar-bg">
+              <div class="timer-bar-fill" id="timerBar"></div>
+            </div>
+          </div>
+        </div>
+        <button class="ghost-button" id="backMenu">Menu</button>
+      </div>
+
+      <main class="game-layout">
+        <section class="board-panel neon-card">
+          <div id="board" class="board"></div>
+        </section>
+
+        <aside class="side-panel neon-card">
+          <div class="panel-block">
+            <h3>Controles</h3>
+            <p>Selecciona una pieza para ver movimientos válidos. Haz clic en el destino para mover.</p>
+          </div>
+          <div class="panel-block stats-block">
+            <h3>Estadísticas</h3>
+            <div class="stat-row"><span>Partidas</span><strong id="statGames">0</strong></div>
+            <div class="stat-row"><span>Victorias P1</span><strong id="statP1">0</strong></div>
+            <div class="stat-row"><span>Victorias P2</span><strong id="statP2">0</strong></div>
+            <div class="stat-row"><span>Empates</span><strong id="statDraws">0</strong></div>
+          </div>
+          <div class="panel-block rules-block">
+            <h3>Reglas rápidas</h3>
+            <p><strong>Capturas obligatorias</strong>. Si puedes capturar, debes hacerlo. Mantén tus piezas protegidas y busca cadenas de combos.</p>
+          </div>
+        </aside>
+      </main>
+    </div>
+
+    <div class="overlay hidden" id="endScreen">
+      <div class="end-card neon-card">
+        <h2 id="endTitle">¡Victoria!</h2>
+        <p id="endMessage">Aurora venció con estilo futurista.</p>
+        <div class="end-stats">
+          <div><span>Ganador</span><strong id="endWinner">Aurora</strong></div>
+          <div><span>Movimientos</span><strong id="endMoves">28</strong></div>
+          <div><span>Capturas</span><strong id="endCaptures">7</strong></div>
+        </div>
+        <div class="end-actions">
+          <button id="rematchButton" class="primary-button">Revancha</button>
+          <button id="menuButton" class="ghost-button">Volver al menú</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="notification-panel hidden" id="gameNotice"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
